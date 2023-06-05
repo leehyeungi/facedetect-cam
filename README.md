@@ -20,12 +20,19 @@ while True:
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     faces = face_xml.detectMultiScale(img_gray, 1.3, 5) #얼굴인식
-    for (x, y, w, h) in faces:
-        mosaic_loc = img[y:y+h, x:x+w] #얼굴 부분 자르기
+
+    if len(faces) >= 2:
         
-        mosaic_loc = cv2.blur(mosaic_loc,(50,50))
+        x1,y1,w1,h1 = faces[0]
+        x2,y2,w2,h2 = faces[1]
+    
+        mosaic_loc1 = img[y1:y1+h1, x1:x1+w1] #얼굴 부분 자르기
+        
+        #0번째 1번째 이미지 변경
+        mosaic_loc = cv2.resize(mosaic_loc1, (x2+w2, y2+h2), cv2.INTER_LINEAR) #0 -> 1
+        mosaic_loc = cv2.resize(mosaic_loc2, (x1+w1, y1+h1), cv2.INTER_LINEAR) #1 -> 0
         img_w_mosaic = img
-        img_w_mosaic[y:y+h, x:x+w] = mosaic_loc #원래 이미지 붙이기
+        img_w_mosaic[y1:y1+h1, x1:x1+w1] =  mosaic_loc#원래 이미지 붙이기
 
     cv2.imshow("Face Recognition", img)
 
