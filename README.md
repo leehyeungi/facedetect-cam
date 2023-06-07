@@ -25,14 +25,17 @@ while True:
         
         x1,y1,w1,h1 = faces[0]
         x2,y2,w2,h2 = faces[1]
-    
+
         mosaic_loc1 = img[y1:y1+h1, x1:x1+w1] #얼굴 부분 자르기
+        mosaic_loc2 = img[y2:y2+h2, x2:x2+w2]
         
         #0번째 1번째 이미지 변경
-        mosaic_loc = cv2.resize(mosaic_loc1, (x2+w2, y2+h2), cv2.INTER_LINEAR) #0 -> 1
-        mosaic_loc = cv2.resize(mosaic_loc2, (x1+w1, y1+h1), cv2.INTER_LINEAR) #1 -> 0
+        mosaic_loc3 = cv2.resize(mosaic_loc1, (w2, h2), cv2.INTER_LINEAR) #0 -> 1
+        mosaic_loc4 = cv2.resize(mosaic_loc2, (w1, h1), cv2.INTER_LINEAR) #1 -> 0
+        
         img_w_mosaic = img
-        img_w_mosaic[y1:y1+h1, x1:x1+w1] =  mosaic_loc#원래 이미지 붙이기
+        img_w_mosaic[y1:y1+h1, x1:x1+w1] = mosaic_loc4 #원래 이미지 붙이기
+        img_w_mosaic[y2:y2+h2, x2:x2+w2] = mosaic_loc3
 
     cv2.imshow("Face Recognition", img)
 
